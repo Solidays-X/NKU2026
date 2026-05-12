@@ -26,6 +26,8 @@ public:
     void restoreFromLoad(const QString &nodeKey);
     int m_currentLoop = 0;           // 检测循环变化以重置 loopMarkers
 
+    void onStoryFinished();
+
     DayOfWeek m_lastDay = DayOfWeek::Saturday;
 
     explicit SceneManager(MainWindow *window, QObject *parent = nullptr);
@@ -34,7 +36,6 @@ public:
 
 private slots:
     void onOptionSelected(int index);
-    void onStoryFinished();
 
 private:
     void loadScenarioData(const QString &filePath);

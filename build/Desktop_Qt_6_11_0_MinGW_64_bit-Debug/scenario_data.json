@@ -82,17 +82,40 @@
 
   "node2_loop": {
     "options": [
-      {"label": "做作业", "next": "node2_do_homework"}
+      {
+        "label": "做作业",
+        "condition": "N == 0",
+        "next": "node2_do_homework_first"
+      },
+      {
+        "label": "做作业",
+        "condition": "N > 0",
+        "next": "node2_do_homework_repeat"
+      }
     ]
   },
 
-  "node2_do_homework": {
+  "node2_do_homework_first": {
     "paragraphs": [
       "你从头开始做大作业。"
     ],
-    "effect": {"sanity": -2, "homework": 1},
+    "effect": {
+      "sanity": -2,
+      "homework": 1
+    },
     "next": "node2_check"
   },
+  "node2_do_homework_repeat": {
+    "paragraphs": [
+      "作业进度增加。"
+    ],
+    "effect": {
+      "sanity": -2,
+      "homework": 1
+    },
+    "next": "node2_check"
+  },
+
   "node2_check": {
     "condition": "N > 3",
     "true_next": "node2_finish",

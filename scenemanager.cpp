@@ -18,7 +18,7 @@ SceneManager::SceneManager(MainWindow *window, QObject *parent)
     loadScenarioData(path);
     connect(m_window, &MainWindow::optionSelected, this, &SceneManager::onOptionSelected);
     // 连接文本播放完毕信号：显示完所有段落后，处理选项或自动跳转
-    connect(m_window->findChild<StoryDisplay*>(), &StoryDisplay::allParagraphsShown,
+    connect(m_window->storyDisplay(), &StoryDisplay::allParagraphsShown,
             this, &SceneManager::onStoryFinished);
 }
 

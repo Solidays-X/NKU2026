@@ -29,6 +29,8 @@ public:
     void setOptions(const QStringList &optionLabels);
     void clearOptions();
 
+    StoryDisplay* storyDisplay() const { return m_storyDisplay; }
+
     GameState* gameState() const { return m_gameState; }
 
 signals:

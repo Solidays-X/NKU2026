@@ -6,6 +6,8 @@
 #include <QScrollBar>
 #include <QApplication>
 
+#include <QMouseEvent>
+
 const QString StoryDisplay::kPromptText = QStringLiteral("▼ 按回车继续 ▼");
 
 StoryDisplay::StoryDisplay(QWidget *parent)
@@ -159,4 +161,10 @@ void StoryDisplay::updatePrompt()
 {
     m_promptVisible = (m_currentIndex + 1 < m_paragraphs.size());
     update();
+}
+
+void StoryDisplay::mousePressEvent(QMouseEvent *event)
+{
+    setFocus();
+    QWidget::mousePressEvent(event);
 }

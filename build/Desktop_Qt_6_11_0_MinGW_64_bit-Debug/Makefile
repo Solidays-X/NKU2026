@@ -288,6 +288,7 @@ Makefile: ../../LoopCampus.pro ../../../../DownloadSoftware/Qt/Install/6.11.0/mi
 		../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/mkspecs/features/qt_config.prf \
 		../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/mkspecs/win32-g++/qmake.conf \
 		../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/mkspecs/features/exclusive_builds.prf \
 		../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/mkspecs/features/toolchain.prf \
 		../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/mkspecs/features/default_pre.prf \
@@ -317,7 +318,6 @@ Makefile: ../../LoopCampus.pro ../../../../DownloadSoftware/Qt/Install/6.11.0/mi
 		../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/lib/Qt6Gui.prl \
 		../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/lib/Qt6Core.prl \
 		../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/lib/Qt6EntryPoint.prl \
-		.qmake.stash \
 		../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/mkspecs/features/build_pass.prf
 	$(QMAKE) -o Makefile ..\..\LoopCampus.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 ../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/mkspecs/features/spec_pre.prf:
@@ -538,6 +538,7 @@ Makefile: ../../LoopCampus.pro ../../../../DownloadSoftware/Qt/Install/6.11.0/mi
 ../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/mkspecs/features/qt_config.prf:
 ../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/mkspecs/win32-g++/qmake.conf:
 ../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/mkspecs/features/exclusive_builds.prf:
 ../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/mkspecs/features/toolchain.prf:
 ../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/mkspecs/features/default_pre.prf:
@@ -567,7 +568,6 @@ Makefile: ../../LoopCampus.pro ../../../../DownloadSoftware/Qt/Install/6.11.0/mi
 ../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/lib/Qt6Gui.prl:
 ../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/lib/Qt6Core.prl:
 ../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/lib/Qt6EntryPoint.prl:
-.qmake.stash:
 ../../../../DownloadSoftware/Qt/Install/6.11.0/mingw_64/mkspecs/features/build_pass.prf:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ..\..\LoopCampus.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"

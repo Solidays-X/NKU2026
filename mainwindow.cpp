@@ -40,6 +40,12 @@ MainWindow::MainWindow(QWidget *parent)
     connectSignals();
 
     updateStatusLabels();
+
+    connect(m_storyDisplay, &StoryDisplay::allParagraphsShown, this, [this]() {
+        if (m_sceneManager) {
+            m_sceneManager->onStoryFinished();
+        }
+    });
 }
 
 MainWindow::~MainWindow()
@@ -237,6 +243,7 @@ void MainWindow::showStoryParagraphs(const QStringList &paragraphs)
     }
     m_storyDisplay->setParagraphs(paragraphs);
     clearOptions();
+    m_storyDisplay->setFocus();
 }
 
 void MainWindow::showStoryText(const QString &fullText)
@@ -244,6 +251,7 @@ void MainWindow::showStoryText(const QString &fullText)
     m_logWindow->append(fullText);
     m_storyDisplay->setFullText(fullText);
     clearOptions();
+    m_storyDisplay->setFocus();
 }
 
 void MainWindow::setOptions(const QStringList &optionLabels)

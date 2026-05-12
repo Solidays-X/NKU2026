@@ -29,6 +29,7 @@ signals:
 protected:
     void keyPressEvent(QKeyEvent *event) override;
     void paintEvent(QPaintEvent *event) override;  // 绘制提示符
+    void mousePressEvent(QMouseEvent *event) override;
 
 private:
     void showNextParagraph();   // 显示下一段
