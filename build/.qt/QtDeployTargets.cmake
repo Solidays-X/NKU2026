@@ -1,0 +1,6 @@
+set(__QT_DEPLOY_TARGET_NankaiLoop_FILE D:/project2/小游戏/剧情游戏c++/build/NankaiLoop.exe)
+set(__QT_DEPLOY_TARGET_NankaiLoop_TYPE EXECUTABLE)
+set(__QT_DEPLOY_TARGET_NankaiLoop_RUNTIME_DLLS C:/msys64/mingw64/bin/Qt6Widgets.dll;C:/msys64/mingw64/bin/Qt6Gui.dll;C:/msys64/mingw64/bin/Qt6Core.dll)
+set(__QT_DEPLOY_TARGET_NankaiTest_FILE D:/project2/小游戏/剧情游戏c++/build/NankaiTest.exe)
+set(__QT_DEPLOY_TARGET_NankaiTest_TYPE EXECUTABLE)
+set(__QT_DEPLOY_TARGET_NankaiTest_RUNTIME_DLLS C:/msys64/mingw64/bin/Qt6Core.dll)
