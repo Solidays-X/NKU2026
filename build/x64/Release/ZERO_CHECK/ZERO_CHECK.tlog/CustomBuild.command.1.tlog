@@ -1,0 +1,10 @@
+^D:\QTPROGRAM\NANKAILOOP\BUILD\CMAKEFILES\004F750C921639AFE999DD394590BA13\GENERATE.STAMP.RULE
+setlocal
+D:\DownloadSoftware\Cmake\bin\cmake.exe -SD:/QtProgram/NankaiLoop -BD:/QtProgram/NankaiLoop/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/QtProgram/NankaiLoop/build/NankaiLoop.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="background.jpg">assets/background.jpg</file>
+        <file alias="bgm.mp3">assets/bgm.mp3</file>
+    </qresource>
+</RCC>

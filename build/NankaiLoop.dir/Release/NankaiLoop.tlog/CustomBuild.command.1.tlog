@@ -1,0 +1,24 @@
+^D:\QTPROGRAM\NANKAILOOP\BUILD\CMAKEFILES\58C5AA4E182B166548A3FFC2A37534BF\QRC_RESOURCES_(CONFIG).CPP.RULE
+setlocal
+cd D:\QtProgram\NankaiLoop\build
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+D:\DownloadSoftware\Cmake\bin\cmake.exe -E cmake_autorcc D:/QtProgram/NankaiLoop/build/CMakeFiles/NankaiLoop_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json Release
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\QTPROGRAM\NANKAILOOP\CMAKELISTS.TXT
+setlocal
+D:\DownloadSoftware\Cmake\bin\cmake.exe -SD:/QtProgram/NankaiLoop -BD:/QtProgram/NankaiLoop/build --check-stamp-file D:/QtProgram/NankaiLoop/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
