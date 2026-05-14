@@ -68,7 +68,7 @@ public:
     bool canteenA = false;                // 食堂剧情A触发过(本循环)
     bool canteenBDone = false;            // 剧情B是否完成过(永久)
     bool canteenCDone = false;            // 剧情C是否完成过(永久)
-    bool canteenAuntUnlocked = false;     // 食堂阿姨选项激活 (跨循环持久, 一次触发永久解锁)
+    bool canteenAuntUnlocked = false;     // 食堂阿姨选项激活 (本循环)
     bool canteenAuntStory111 = false;     // 本循环已触发剧情111
     bool canteenAuntTalkedThisLoop = false; // 本循环已经和阿姨说过话 (L<8 时第一次/非第一次区分)
     bool ladyHandkerchiefFoundThisLoop = false; // 本循环已在操场捡到手帕

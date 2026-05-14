@@ -53,13 +53,12 @@ void GameState::resetLoopFlags() {
     teachingAa = false;
     libraryAa = false;
     canteenA = false;
-    // 注: canteenAuntUnlocked 改为持久(跨循环). 一旦某次循环偶然遇到食堂阿姨,
-    // 之后所有循环都能直接选 [食堂阿姨] 选项, 不再依赖 30% 概率事件.
+    canteenAuntUnlocked = false;
     canteenAuntStory111 = false;
     canteenAuntTalkedThisLoop = false;
     ladyHandkerchiefFoundThisLoop = false;
     // catTeachingSat / catLibrarySat / catPlaygroundSat 改为持久(跨循环累计),
-    // 任务【陪猫猫看日落】需要三个地点都"坐过去"
+    // 任务【陪猫猫看日落】需要三个地点都"坐过去"(原文档要求三次, 不要求同一循环)
     // catTeachingMet / catLibraryMet / catPlaygroundMet 保持单循环, 用于"一天只触发一次"
     catTeachingMet = false;
     catLibraryMet = false;

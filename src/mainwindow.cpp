@@ -28,8 +28,6 @@
 #include <QJsonArray>
 #include <QRegularExpression>
 #include <QDateTime>
-#include <functional>
-#include <memory>
 #include <QScrollArea>
 
 static QString kScrambleSrc =
@@ -585,113 +583,36 @@ void MainWindow::showEnding(const QString& title, const QString& body) {
         m_state->seenEndings.insert(title);
     }
     m_pendingContinue = nullptr;
+    QString html = QStringLiteral(
+        "<div style='text-align:center;'>"
+        "<h2 style='color:#ffd97a;'>%1</h2>"
+        "<div style='text-align:left; margin-top:10px;'>%2</div>"
+        "<p style='margin-top:18px; color:#ffd97a;'>—— 完 ——</p>"
+        "</div>").arg(title.toHtmlEscaped(),
+                     body.toHtmlEscaped().replace("\n", "<br/>"));
+    setDialogText(html);
 
-    // 1) 把 body 拆成"段落组" (每页). 优先按 "\n\n" 切段, 每页装若干段以填满对话框.
-    // 这样长结局 (如 T1/T2/隐藏结局) 就不会一次性挤进滚动条里看不完.
-    auto splitPages = [](const QString& text) -> QStringList {
-        // 先按双换行切自然段
-        QStringList paragraphs = text.split(QStringLiteral("\n\n"), Qt::SkipEmptyParts);
-        // 如果没有双换行, 退化为按单换行
-        if (paragraphs.size() <= 1) {
-            paragraphs = text.split('\n', Qt::SkipEmptyParts);
-        }
-        // 每页大约 280 个汉字, 段落较短时合并, 较长时各自一页
-        const int kCharsPerPage = 280;
-        QStringList pages;
-        QString cur;
-        int curLen = 0;
-        for (const QString& p : paragraphs) {
-            const QString trimmed = p.trimmed();
-            if (trimmed.isEmpty()) continue;
-            // 用"——"开头 (分隔小节) 时强制换页
-            const bool isSection = trimmed.startsWith(QStringLiteral("——"));
-            if (isSection && !cur.isEmpty()) {
-                pages << cur;
-                cur.clear();
-                curLen = 0;
-            }
-            if (!cur.isEmpty()) cur += QStringLiteral("\n\n");
-            cur += trimmed;
-            curLen += trimmed.size();
-            if (curLen >= kCharsPerPage) {
-                pages << cur;
-                cur.clear();
-                curLen = 0;
-            }
-        }
-        if (!cur.isEmpty()) pages << cur;
-        if (pages.isEmpty()) pages << text;
-        return pages;
-    };
-
-    auto pages = std::make_shared<QStringList>(splitPages(body));
-    auto pageIndex = std::make_shared<int>(0);
-
-    // 渲染指定页: 第一页带标题, 末页才出现"重新开始"按钮, 否则是"下一页"
-    auto render = std::make_shared<std::function<void()>>();
-    *render = [this, title, pages, pageIndex, render]() {
+    auto* btn = new QPushButton(m_choicesPanel);
+    btn->setText(QStringLiteral("重新开始"));
+    btn->setCursor(Qt::PointingHandCursor);
+    btn->setStyleSheet(styleSheetForButton());
+    connect(btn, &QPushButton::clicked, this, [this]() {
         clearChoices();
-        const int total = pages->size();
-        const int idx = *pageIndex;
-        const bool isFirst = (idx == 0);
-        const bool isLast  = (idx == total - 1);
-
-        QString pageHtml = pages->at(idx).toHtmlEscaped().replace("\n", "<br/>");
-        QString html;
-        if (isFirst) {
-            html = QStringLiteral(
-                "<div style='text-align:center;'>"
-                "<h2 style='color:#ffd97a;'>%1</h2>"
-                "</div>"
-                "<div style='text-align:left; margin-top:10px;'>%2</div>")
-                .arg(title.toHtmlEscaped(), pageHtml);
-        } else {
-            html = QStringLiteral(
-                "<div style='text-align:left;'>%1</div>")
-                .arg(pageHtml);
-        }
-        if (isLast) {
-            html += QStringLiteral(
-                "<p style='text-align:center; margin-top:18px; color:#ffd97a;'>—— 完 ——</p>");
-        }
-        // 右下角页码提示
-        if (total > 1) {
-            html += QStringLiteral(
-                "<p style='text-align:right; margin-top:8px; color:#9c9c9c;"
-                " font-size:12px;'>第 %1 / %2 页</p>")
-                .arg(idx + 1).arg(total);
-        }
-        setDialogText(html);
-
-        auto* btn = new QPushButton(m_choicesPanel);
-        btn->setCursor(Qt::PointingHandCursor);
-        btn->setStyleSheet(styleSheetForButton());
-        if (!isLast) {
-            btn->setText(QStringLiteral("下一页 ▶"));
-            connect(btn, &QPushButton::clicked, this, [pageIndex, render]() {
-                ++(*pageIndex);
-                (*render)();
-            });
-        } else {
-            btn->setText(QStringLiteral("重新开始"));
-            connect(btn, &QPushButton::clicked, this, [this]() {
-                clearChoices();
-                QTimer::singleShot(0, this, [this]() {
-                    QSet<QString> seen = m_state ? m_state->seenEndings : QSet<QString>();
-                    m_engine.reset();
-                    m_state.reset(new GameState());
-                    m_state->seenEndings = seen;
-                    m_engine.reset(new SceneEngine(static_cast<IGameView*>(this),
-                                                   m_state.get(), this));
-                    refreshHud();
-                    m_engine->startIntro();
-                });
-            });
-        }
-        m_choicesLayout->addWidget(btn);
-        m_choiceButtons.append(btn);
-    };
-    (*render)();
+        QTimer::singleShot(0, this, [this]() {
+            // 保留已游玩结局图鉴, 跨"重新开始"持久化
+            QSet<QString> seen = m_state ? m_state->seenEndings : QSet<QString>();
+            // 先销毁 engine, 因为它持有指向 m_state 的裸指针 - 必须先于 m_state 释放
+            m_engine.reset();
+            m_state.reset(new GameState());
+            m_state->seenEndings = seen;
+            m_engine.reset(new SceneEngine(static_cast<IGameView*>(this),
+                                           m_state.get(), this));
+            refreshHud();
+            m_engine->startIntro();
+        });
+    });
+    m_choicesLayout->addWidget(btn);
+    m_choiceButtons.append(btn);
 }
 
 // 道具/任务/裂缝/结局图鉴
@@ -1071,7 +992,6 @@ bool MainWindow::saveToSlot(int slot, QString* err) {
     root["storyAAA_done"]      = m_state->storyAAA_done;
     root["inDormTonight"]      = m_state->inDormTonight;
     root["nightChoiceMadeThisLoop"] = m_state->nightChoiceMadeThisLoop;
-    root["canteenAuntUnlocked"]= m_state->canteenAuntUnlocked;
     // 回看日志
     QJsonArray logArr;
     for (const QString& s : m_storyLog) logArr.append(s);
@@ -1148,7 +1068,6 @@ bool MainWindow::loadFromSlot(int slot, QString* err) {
     st->storyAAA_done      = root["storyAAA_done"].toBool();
     st->inDormTonight      = root["inDormTonight"].toBool(true);
     st->nightChoiceMadeThisLoop = root["nightChoiceMadeThisLoop"].toBool();
-    st->canteenAuntUnlocked     = root["canteenAuntUnlocked"].toBool();
     st->clampStats();
 
     m_storyLog.clear();
